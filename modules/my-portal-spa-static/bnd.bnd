@@ -1,0 +1,4 @@
+Bundle-Name: my-portal-spa-static
+Bundle-SymbolicName: ru.kashtanov.my-portal-spa-static
+Bundle-Version: 1.0.0
+Web-ContextPath: /my-react-spa
