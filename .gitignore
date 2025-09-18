@@ -5,6 +5,7 @@
 **/.sass-cache
 **/.settings
 **/bin
+/docker-compose.yaml
 **/build
 **/build_gradle
 **/dist
