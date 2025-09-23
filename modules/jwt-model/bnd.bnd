@@ -1,0 +1,9 @@
+Bundle-Name: jwt-model
+Bundle-SymbolicName: ru.kashtanov.api.jwt
+Bundle-Version: 1.0.0
+Export-Package: ru.kashtanov.api.jwt
+Web-ContextPath: /o
+Import-Package: \
+  javax.servlet;version="[3.1,4)", \
+  javax.servlet.http;version="[3.1,4)", \
+  *
