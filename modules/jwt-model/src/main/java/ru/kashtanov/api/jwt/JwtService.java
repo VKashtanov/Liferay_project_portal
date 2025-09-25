@@ -28,7 +28,7 @@ import javax.crypto.spec.SecretKeySpec;
 public class JwtService extends HttpServlet {
 
 
-// Servlet is a class that process request, directly it is not invoked. It is maneged via the Servlet-Container (Tomcat,Jetty etc.)
+    // Servlet is a class that process request, directly it is not invoked. It is maneged via the Servlet-Container (Tomcat,Jetty etc.)
     // in doGet Servlet-container creates HttpServletRequest, HttpServletResponse objects, an
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws  IOException {
@@ -41,7 +41,7 @@ public class JwtService extends HttpServlet {
             return;
         }
         // props reading
-        String jwtSecret = PropsUtil.get("headless.jwt.secret");
+        String jwtSecret = PropsUtil.get("headless.authentication.verifier.jwt.secret"); // headless.jwt.secret
         if (Validator.isBlank(jwtSecret)) { // check if it is not empty
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().print("{\"error\":\"JWT secret not configured\"}");
@@ -55,26 +55,20 @@ public class JwtService extends HttpServlet {
                     "{\"sub\":\"%d\",\"iat\":%d,\"exp\":%d}",
                     userId, now / 1000, (now + 3600000) / 1000 // 1 час жизни
             );
-                 System.out.println("POINT_1, header: "+ header);
-                 System.out.println("POINT_2, payload: "+ payload);
+
             String headerB64 = Base64.getEncoder().encodeToString(header.getBytes("UTF-8"));
             String payloadB64 = Base64.getEncoder().encodeToString(payload.getBytes("UTF-8"));
-            String signingInput = headerB64 + "." + payloadB64;
-                  System.out.println("POINT_3, signingInput: "+ signingInput);
 
+            String signingInput = headerB64 + "." + payloadB64;
             Mac hmac = Mac.getInstance("HmacSHA256"); // Hash-based Message Authentication Code
             hmac.init(new SecretKeySpec(jwtSecret.getBytes("UTF-8"), "HmacSHA256"));
             byte[] signature = hmac.doFinal(signingInput.getBytes("UTF-8"));
-                  System.out.println("POINT_4, byte[] signature: "+ Arrays.toString(signature));
             String signatureB64 = Base64.getEncoder().encodeToString(signature);
-                  System.out.println("POINT_5, signatureB64: "+ signatureB64);
             String jwt = signingInput + "." + signatureB64;
-                  System.out.println("POINT_6, signingInput + \".\" + signatureB64: "+ jwt);
+
             JSONObject json = JSONFactoryUtil.createJSONObject();
             json.put("jwt", jwt.replaceAll("=", "")); // убираем padding для чистоты
-                  System.out.println("POINT_7, JSONObject: "+ json);
             response.setContentType("application/json");
-
             PrintWriter out = response.getWriter();
             out.print(json.toString());
 

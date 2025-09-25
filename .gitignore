@@ -1,3 +1,5 @@
+
+
 **/*.iml
 **/.ivy
 **/.classpath
@@ -26,3 +28,16 @@
 /plugins-sdk/dist
 /plugins-sdk/lib
 test-results
+
+## CUSTOM
+build
+bundles
+gradle
+.idea
+node_modules_cache
+node_modules
+themes
+GETTING_STARTED.md
+configs
+platform.bndrun
+.yarnrc
